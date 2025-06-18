@@ -716,3 +716,38 @@ code {
         padding: 2rem;
     }
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scrollbar-width: none;
+}
+
+body {
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar { 
+    display: none;
+}
+
+.docs-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.docs-content::-webkit-scrollbar {
+    display: none;
+}
+
+.docs-sidebar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.docs-sidebar::-webkit-scrollbar {
+    display: none;
+}
