@@ -128,72 +128,112 @@
                     </span>
                     Getting Started with Scripts
                 </h2>
-                <p>Learn how to create and execute powerful scripts with Bosploit's Lua scripting environment.</p>
+                <p>Learn how to create and execute powerful scripts with Bosploit's Lua scripting environment using Roblox-style syntax.</p>
             </div>
 
             <div class="content-section">
                 <h2>Basic Script Structure</h2>
-                <p>All Bosploit scripts are written in Lua and follow a simple structure:</p>
+                <p>All Bosploit scripts follow Roblox-style conventions with service-based architecture:</p>
                 
                 <pre><code>-- Simple Hello World script
-log("Hello from Bosploit!")
+print("Hello from Bosploit!")
+
+-- Get services
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
 
 -- Get player information
-local player = getPlayer()
-log("Player name: " .. player.name)
-log("Player position: " .. player.x .. ", " .. player.y .. ", " .. player.z)</code></pre>
+print("Player name: " .. LocalPlayer.Name)
+local position = LocalPlayer.Character.HumanoidRootPart.Position
+print("Player position: " .. tostring(position))</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Script Examples</h2>
                 
                 <h3>Auto Mining Script</h3>
-                <pre><code>-- Auto mining script that mines in a straight line
+                <pre><code>-- Auto mining script using Roblox-style syntax
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+
 local distance = 50
-local player = getPlayer()
+local character = LocalPlayer.Character
+local humanoidRootPart = character.HumanoidRootPart
 
 for i = 1, distance do
     -- Move forward
-    player.moveForward()
+    local currentPos = humanoidRootPart.Position
+    local newPos = currentPos + humanoidRootPart.CFrame.LookVector * 3
+    humanoidRootPart.Position = newPos
     wait(0.1)
     
     -- Mine the block in front
-    local frontBlock = getBlock(player.x + 1, player.y, player.z)
-    if frontBlock.type ~= "air" then
-        mineBlock(player.x + 1, player.y, player.z)
+    local frontPos = newPos + humanoidRootPart.CFrame.LookVector * 1
+    local frontBlock = Workspace:GetBlockAt(frontPos)
+    if frontBlock and frontBlock.Name ~= "Air" then
+        Workspace:DestroyBlock(frontPos)
         wait(0.5)
     end
 end
 
-log("Mining complete!")</code></pre>
+print("Mining complete!")</code></pre>
 
                 <h3>Auto Combat Script</h3>
-                <pre><code>-- Auto combat script that attacks nearby enemies
-while true do
-    local enemies = getNearbyEntities("hostile", 10)
+                <pre><code>-- Auto combat script using Roblox-style syntax
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local function findNearestEnemy()
+    local character = LocalPlayer.Character
+    if not character then return nil end
     
-    if #enemies > 0 then
-        local target = enemies[1]
-        aimAt(target.x, target.y + 1, target.z)
-        attack(target)
-        log("Attacking: " .. target.type)
-        wait(0.5)
-    else
-        wait(1) -- No enemies, wait longer
+    local humanoidRootPart = character.HumanoidRootPart
+    local nearestEnemy = nil
+    local shortestDistance = math.huge
+    
+    for _, entity in pairs(Workspace:GetChildren()) do
+        if entity:HasTag("Hostile") then
+            local distance = (entity.Position - humanoidRootPart.Position).Magnitude
+            if distance < 10 and distance < shortestDistance then
+                nearestEnemy = entity
+                shortestDistance = distance
+            end
+        end
     end
-end</code></pre>
+    
+    return nearestEnemy
+end
+
+local connection = RunService.Heartbeat:Connect(function()
+    local enemy = findNearestEnemy()
+    if enemy then
+        LocalPlayer:LookAt(enemy.Position + Vector3.new(0, 1, 0))
+        LocalPlayer:Attack(enemy)
+        print("Attacking: " .. enemy.Name)
+        wait(0.5)
+    end
+end)</code></pre>
 
                 <h3>Building Script</h3>
-                <pre><code>-- Build a simple house
-local player = getPlayer()
-local startX, startY, startZ = player.x, player.y, player.z
+                <pre><code>-- Build a simple house using Roblox-style syntax
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+
+local character = LocalPlayer.Character
+local startPos = character.HumanoidRootPart.Position
 
 -- Build walls
 for x = 0, 10 do
     for z = 0, 10 do
         for y = 0, 3 do
             if x == 0 or x == 10 or z == 0 or z == 10 then
-                setBlock(startX + x, startY + y, startZ + z, "cobblestone")
+                local blockPos = startPos + Vector3.new(x, y, z)
+                Workspace:SetBlock(blockPos, "Cobblestone")
             end
         end
     end
@@ -202,61 +242,171 @@ end
 -- Build roof
 for x = 0, 10 do
     for z = 0, 10 do
-        setBlock(startX + x, startY + 4, startZ + z, "oak_planks")
+        local roofPos = startPos + Vector3.new(x, 4, z)
+        Workspace:SetBlock(roofPos, "OakPlanks")
     end
 end
 
-log("House built successfully!")</code></pre>
+print("House built successfully!")</code></pre>
+            </div>
+
+            <div class="content-section">
+                <h2>Service-Based Architecture</h2>
+                <p>Bosploit uses Roblox-style services for organized code structure:</p>
+                
+                <pre><code>-- Common services
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Access local player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")</code></pre>
+            </div>
+
+            <div class="content-section">
+                <h2>Event Handling</h2>
+                <p>Use Roblox-style event connections and signals:</p>
+                
+                <pre><code>-- Player events
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Health changed event
+LocalPlayer.Character.Humanoid.HealthChanged:Connect(function(health)
+    print("Health changed to: " .. health)
+    if health < 20 then
+        -- Use healing item
+        LocalPlayer:UseItem("GoldenApple")
+    end
+end)
+
+-- Block break event
+local Workspace = game:GetService("Workspace")
+Workspace.BlockDestroyed:Connect(function(position, blockType)
+    print("Broke " .. blockType .. " at " .. tostring(position))
+end)
+
+-- Input events
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed then
+        if input.KeyCode == Enum.KeyCode.F then
+            print("F key pressed!")
+        end
+    end
+end)</code></pre>
+            </div>
+
+            <div class="content-section">
+                <h2>GUI Integration</h2>
+                <p>Create user interfaces using Roblox-style GUI elements:</p>
+                
+                <pre><code>-- Create a ScreenGui
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "BosploitGUI"
+screenGui.Parent = PlayerGui
+
+-- Create main frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 300, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainFrame.Parent = screenGui
+
+-- Add title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.Text = "Bosploit Control Panel"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.BackgroundTransparency = 1
+title.Parent = mainFrame
+
+-- Add button
+local startButton = Instance.new("TextButton")
+startButton.Size = UDim2.new(0, 100, 0, 30)
+startButton.Position = UDim2.new(0, 10, 0, 40)
+startButton.Text = "Start Mining"
+startButton.Parent = mainFrame
+
+startButton.MouseButton1Click:Connect(function()
+    print("Mining started!")
+    -- Add your mining logic here
+end)</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Best Practices</h2>
                 <ul>
-                    <li><strong>Use wait() functions:</strong> Prevent your scripts from running too fast and causing lag</li>
-                    <li><strong>Error handling:</strong> Use if statements to check for valid objects before using them</li>
-                    <li><strong>Modular code:</strong> Break complex scripts into smaller functions</li>
-                    <li><strong>Comments:</strong> Document your code with comments for future reference</li>
-                    <li><strong>Testing:</strong> Test scripts in single-player before using on servers</li>
+                    <li><strong>Use wait() and RunService:</strong> Control script timing with <code>wait()</code> or <code>RunService.Heartbeat</code></li>
+                    <li><strong>Service-based architecture:</strong> Always get services at the top of your script</li>
+                    <li><strong>Error handling:</strong> Use <code>pcall()</code> for safe function calls</li>
+                    <li><strong>Event connections:</strong> Store connections and disconnect them when needed</li>
+                    <li><strong>Object-oriented design:</strong> Use methods like <code>LocalPlayer:Method()</code></li>
+                    <li><strong>Vector3 usage:</strong> Use Vector3 objects for 3D positions and calculations</li>
                 </ul>
             </div>
 
             <div class="content-section">
-                <h2>Advanced Features</h2>
+                <h2>Advanced Scripting Patterns</h2>
                 
-                <h3>Event Handling</h3>
-                <pre><code>-- Register event listeners
-onPlayerDamage(function(damage)
-    log("Player took " .. damage .. " damage!")
-    if getPlayer().health < 5 then
-        useItem("golden_apple")
-    end
-end)
+                <h3>Module Scripts</h3>
+                <pre><code>-- Create reusable modules
+local MiningModule = {}
 
-onBlockBreak(function(x, y, z, blockType)
-    log("Broke " .. blockType .. " at " .. x .. ", " .. y .. ", " .. z)
-end)</code></pre>
+function MiningModule.StartAutoMine(distance)
+    local Players = game:GetService("Players")
+    local Workspace = game:GetService("Workspace")
+    local LocalPlayer = Players.LocalPlayer
+    
+    -- Mining logic here
+    print("Auto mining started for " .. distance .. " blocks")
+end
 
-                <h3>GUI Integration</h3>
-                <pre><code>-- Create a simple GUI
-local gui = createGUI("My Script", 300, 200)
-gui:addButton("Start Mining", function()
-    startMining()
-end)
-gui:addSlider("Speed", 1, 10, 5, function(value)
-    miningSpeed = value
-end)
-gui:show()</code></pre>
+function MiningModule.StopAutoMine()
+    print("Auto mining stopped")
+end
+
+return MiningModule</code></pre>
+
+                <h3>State Management</h3>
+                <pre><code>-- Use tables for state management
+local ScriptState = {
+    isMining = false,
+    targetPosition = Vector3.new(0, 0, 0),
+    miningSpeed = 1,
+    blocksMinedCount = 0
+}
+
+local function updateState(key, value)
+    ScriptState[key] = value
+    print("State updated: " .. key .. " = " .. tostring(value))
+end
+
+-- Usage
+updateState("isMining", true)
+updateState("miningSpeed", 2)</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Script Management</h2>
-                <p>Tips for organizing and managing your scripts:</p>
+                <p>Tips for organizing and managing your Roblox-style scripts:</p>
                 <ul>
-                    <li>Save scripts in the <code>scripts/</code> folder</li>
-                    <li>Use descriptive filenames like <code>auto_farm.lua</code></li>
-                    <li>Create folders for different script categories</li>
-                    <li>Backup important scripts regularly</li>
-                    <li>Share scripts with the community through GitHub</li>
+                    <li>Use <code>ReplicatedStorage</code> for shared modules and data</li>
+                    <li>Organize scripts with proper naming: <code>AutoFarmScript</code>, <code>CombatModule</code></li>
+                    <li>Use <code>require()</code> for modular script architecture</li>
+                    <li>Implement proper cleanup with <code>:Disconnect()</code> for connections</li>
+                    <li>Use <code>game:GetService()</code> consistently for all services</li>
+                    <li>Follow Roblox Lua style guide for consistency</li>
                 </ul>
             </div>
         </main>
