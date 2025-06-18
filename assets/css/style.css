@@ -779,7 +779,6 @@ code {
     }
 }
 
-/* Hide scrollbars */
 ::-webkit-scrollbar {
     display: none;
 }
@@ -788,13 +787,11 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/* Prevent content overflow */
 img, video, canvas, svg {
     max-width: 100%;
     height: auto;
 }
 
-/* Ensure no horizontal overflow */
 * {
     max-width: 100%;
 }
