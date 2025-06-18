@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - Bosploit</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">&lt;/&gt;</span>
+            <span class="brand-text">Bosploit</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="../docs/functions.html" class="nav-link active">
+                <span>Documentation</span>
+            </a>
+            <a href="../download.html" class="nav-link">
+                <span>Download</span>
+            </a>
+            <a href="https://github.com/bovanlaarhoven" class="nav-link">
+                <span>GitHub</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-header">
+                <h3>
+                    <span class="icon">📚</span>
+                    Documentation
+                </h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="functions.html" class="sidebar-link">
+                        <span class="icon">⚡</span>
+                        Custom Functions
+                    </a>
+                </li>
+                <li>
+                    <a href="scripting.html" class="sidebar-link">
+                        <span class="icon">📝</span>
+                        Scripting Guide
+                    </a>
+                </li>
+                <li>
+                    <a href="troubleshooting.html" class="sidebar-link active">
+                        <span class="icon">🔧</span>
+                        Troubleshooting
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <h1>Troubleshooting</h1>
+            
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🔥</span>
+                    Common Issues
+                </h2>
+                
+                <div class="issue-card error">
+                    <h3>🚫 Client won't inject</h3>
+                    <div class="solutions">
+                        <div class="solution">
+                            <strong>Run injector as administrator</strong>
+                            <p>Right-click the injector and select "Run as administrator"</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Disable antivirus temporarily</strong>
+                            <p>Add Bosploit folder to antivirus exclusions</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Make sure Minecraft is closed before injection</strong>
+                            <p>Close all Minecraft instances completely</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Check if you have the correct Java version</strong>
+                            <p>Ensure Java 17+ is installed and accessible</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="issue-card warning">
+                    <h3>📝 Scripts not executing</h3>
+                    <div class="solutions">
+                        <div class="solution">
+                            <strong>Check for syntax errors in your Lua code</strong>
+                            <p>Review console output for error messages</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Verify script editor is properly opened</strong>
+                            <p>Press Insert key to open the script editor</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Make sure functions are called correctly</strong>
+                            <p>Check function names and parameter types</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Check console for error messages</strong>
+                            <p>Press F9 to clear console and see fresh output</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="issue-card critical">
+                    <h3>💥 Game crashes on startup</h3>
+                    <div class="solutions">
+                        <div class="solution">
+                            <strong>Verify Minecraft version compatibility</strong>
+                            <p>Ensure you're using Minecraft Java 1.21.5</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Remove conflicting mods</strong>
+                            <p>Disable other mods that might conflict</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Reinstall the client</strong>
+                            <p>Clean install of Bosploit may resolve issues</p>
+                        </div>
+                        <div class="solution">
+                            <strong>Check system requirements</strong>
+                            <p>Verify your system meets minimum requirements</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🔍</span>
+                    Advanced Debugging
+                </h2>
+                
+                <div class="debug-card">
+                    <h3>Console Commands</h3>
+                    <pre><code>-- Enable debug mode
+debug.enabled = true
+
+-- Check client status
+print(client.status)
+
+-- View loaded modules
+for name, module in pairs(client.modules) do
+    print(name .. ": " .. (module.enabled and "ON" or "OFF"))
+end
+
+-- Memory usage
+print("Memory usage: " .. collectgarbage("count") .. " KB")</code></pre>
+                </div>
+
+                <div class="debug-card">
+                    <h3>Performance Optimization</h3>
+                    <pre><code>-- Reduce script execution frequency
+function optimizedLoop()
+    local lastUpdate = 0
+    local updateInterval = 0.1 -- 100ms
+    
+    while running do
+        local currentTime = tick()
+        if currentTime - lastUpdate > updateInterval then
+            -- Your script logic here
+            lastUpdate = currentTime
+        end
+        wait(0.01) -- Small wait to prevent high CPU usage
+    end
+end</code></pre>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🆘</span>
+                    Getting Help
+                </h2>
+                <p>If you're still experiencing issues, you can get help from our community:</p>
+                
+                <div class="help-links">
+                    <a href="#" class="help-link discord">
+                        <div class="help-icon">💬</div>
+                        <div class="help-content">
+                            <h3>Discord Server</h3>
+                            <p>Join our community for real-time support</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://github.com/bovanlaarhoven" class="help-link github">
+                        <div class="help-icon">🐛</div>
+                        <div class="help-content">
+                            <h3>GitHub Issues</h3>
+                            <p>Report bugs and request features</p>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="help-link wiki">
+                        <div class="help-icon">📖</div>
+                        <div class="help-content">
+                            <h3>Documentation Wiki</h3>
+                            <p>Comprehensive guides and tutorials</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .issue-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+            margin-bottom: 2rem;
+            border-left-width: 4px;
+        }
+
+        .issue-card.error {
+            border-left-color: #ef4444;
+        }
+
+        .issue-card.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .issue-card.critical {
+            border-left-color: #dc2626;
+        }
+
+        .issue-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .solutions {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .solution {
+            padding: 1rem;
+            background: rgba(124, 58, 237, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .solution strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .solution p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .debug-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            margin-bottom: 1.5rem;
+        }
+
+        .debug-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .help-links {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .help-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .help-link:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.1);
+        }
+
+        .help-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .help-content h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .help-content p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Functions - Bosploit</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">&lt;/&gt;</span>
+            <span class="brand-text">Bosploit</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="../docs/functions.html" class="nav-link active">
+                <span>Documentation</span>
+            </a>
+            <a href="../download.html" class="nav-link">
+                <span>Download</span>
+            </a>
+            <a href="https://github.com/bovanlaarhoven" class="nav-link">
+                <span>GitHub</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-header">
+                <h3>
+                    <span class="icon">📚</span>
+                    Documentation
+                </h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="functions.html" class="sidebar-link active">
+                        <span class="icon">⚡</span>
+                        Custom Functions
+                    </a>
+                </li>
+                <li>
+                    <a href="scripting.html" class="sidebar-link">
+                        <span class="icon">📝</span>
+                        Scripting Guide
+                    </a>
+                </li>
+                <li>
+                    <a href="troubleshooting.html" class="sidebar-link">
+                        <span class="icon">🔧</span>
+                        Troubleshooting
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <h1>Custom Functions</h1>
+            
+            <section class="content-section">
+                <h2>
+                    <span class="icon">👤</span>
+                    Player Functions
+                </h2>
+                
+                <div class="function-card">
+                    <h3><code>game.Players.LocalPlayer</code></h3>
+                    <p>Access the local player object for position, health, and other properties.</p>
+                    <pre><code>local player = game.Players.LocalPlayer
+print("Player name: " .. player.Name)
+print("Health: " .. player.Character.Humanoid.Health)</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>setWalkSpeed(speed)</code></h3>
+                    <p>Modify player movement speed with custom values.</p>
+                    <pre><code>setWalkSpeed(50) -- Set speed to 50
+setWalkSpeed(16) -- Reset to default speed</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>setJumpPower(power)</code></h3>
+                    <p>Adjust player jump height and power.</p>
+                    <pre><code>setJumpPower(100) -- High jump
+setJumpPower(50)  -- Default jump</code></pre>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🌍</span>
+                    World Functions
+                </h2>
+                
+                <div class="function-card">
+                    <h3><code>getBlockAt(x, y, z)</code></h3>
+                    <p>Retrieve block information at specific coordinates.</p>
+                    <pre><code>local block = getBlockAt(100, 64, 200)
+print("Block type: " .. block.type)
+print("Block hardness: " .. block.hardness)</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>setBlock(x, y, z, blockType)</code></h3>
+                    <p>Place blocks at specified coordinates (creative mode).</p>
+                    <pre><code>setBlock(100, 65, 200, "diamond_block")
+setBlock(101, 65, 200, "gold_block")</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>mineBlock(x, y, z)</code></h3>
+                    <p>Automatically mine blocks at given coordinates.</p>
+                    <pre><code>mineBlock(player.x, player.y - 1, player.z)
+-- Mines the block below the player</code></pre>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🔧</span>
+                    Utility Functions
+                </h2>
+                
+                <div class="function-card">
+                    <h3><code>wait(seconds)</code></h3>
+                    <p>Pause script execution for specified duration.</p>
+                    <pre><code>wait(2)      -- Wait 2 seconds
+wait(0.5)    -- Wait half a second</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>print(message)</code></h3>
+                    <p>Output messages to the console for debugging.</p>
+                    <pre><code>print("Script started!")
+print("Current position: " .. player.x .. ", " .. player.y .. ", " .. player.z)</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>getDistance(x1, y1, z1, x2, y2, z2)</code></h3>
+                    <p>Calculate distance between two points in 3D space.</p>
+                    <pre><code>local dist = getDistance(0, 0, 0, 100, 0, 100)
+print("Distance: " .. dist)</code></pre>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">⚔</span>
+                    Combat Functions
+                </h2>
+                
+                <div class="function-card">
+                    <h3><code>attackEntity(entity)</code></h3>
+                    <p>Attack specified entity or player.</p>
+                    <pre><code>local target = findNearestPlayer()
+if target then
+    attackEntity(target)
+end</code></pre>
+                </div>
+
+                <div class="function-card">
+                    <h3><code>findNearestPlayer()</code></h3>
+                    <p>Find the closest player to your position.</p>
+                    <pre><code>local nearest = findNearestPlayer()
+if nearest then
+    print("Nearest player: " .. nearest.Name)
+end</code></pre>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">📋</span>
+                    Function Example
+                </h2>
+                <p>Here's a comprehensive example combining multiple functions:</p>
+                
+                <pre><code>-- Advanced auto-farming script
+local player = game.Players.LocalPlayer
+local farming = false
+
+function autoFarm()
+    farming = true
+    setWalkSpeed(25) -- Increase speed for efficiency
+    
+    while farming do
+        -- Scan 5x5 area around player
+        for x = -2, 2 do
+            for z = -2, 2 do
+                local blockX = player.x + x
+                local blockZ = player.z + z
+                local blockY = player.y - 1
+                
+                local block = getBlockAt(blockX, blockY, blockZ)
+                
+                -- Check for valuable blocks
+                if block.type == "diamond_ore" or 
+                   block.type == "gold_ore" or 
+                   block.type == "iron_ore" then
+                    
+                    print("Found " .. block.type .. " at " .. blockX .. ", " .. blockY .. ", " .. blockZ)
+                    mineBlock(blockX, blockY, blockZ)
+                    wait(0.5) -- Brief pause between mining
+                end
+            end
+        end
+        
+        wait(1) -- Scan every second
+    end
+end
+
+function stopFarming()
+    farming = false
+    setWalkSpeed(16) -- Reset to normal speed
+    print("Auto-farming stopped")
+end
+
+-- Start the auto-farm
+print("Starting auto-farm...")
+autoFarm()</code></pre>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        .function-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .function-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.1);
+        }
+
+        .function-card h3 {
+            color: var(--accent-primary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .function-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+    </style>
+</body>
+</html>

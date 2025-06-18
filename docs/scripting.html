@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripting Guide - Bosploit</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-icon">&lt;/&gt;</span>
+            <span class="brand-text">Bosploit</span>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">
+                <span>Home</span>
+            </a>
+            <a href="../docs/functions.html" class="nav-link active">
+                <span>Documentation</span>
+            </a>
+            <a href="../download.html" class="nav-link">
+                <span>Download</span>
+            </a>
+            <a href="https://github.com/bovanlaarhoven" class="nav-link">
+                <span>GitHub</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="docs-layout">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-header">
+                <h3>
+                    <span class="icon">📚</span>
+                    Documentation
+                </h3>
+            </div>
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="functions.html" class="sidebar-link">
+                        <span class="icon">⚡</span>
+                        Custom Functions
+                    </a>
+                </li>
+                <li>
+                    <a href="scripting.html" class="sidebar-link active">
+                        <span class="icon">📝</span>
+                        Scripting Guide
+                    </a>
+                </li>
+                <li>
+                    <a href="troubleshooting.html" class="sidebar-link">
+                        <span class="icon">🔧</span>
+                        Troubleshooting
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-content">
+            <h1>Scripting Guide</h1>
+            
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🚀</span>
+                    Getting Started
+                </h2>
+                <p>Bosploit uses Lua scripting similar to Roblox executors. You can write custom functions and execute them directly in Minecraft.</p>
+                
+                <h3>Key Bindings</h3>
+                <pre><code>-- Open Script Editor: Insert (default)
+-- Execute Script: F8
+-- Clear Console: F9</code></pre>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">📋</span>
+                    Basic Script Structure
+                </h2>
+                <p>Here's how to structure your scripts for optimal performance:</p>
+                
+                <pre><code>-- Basic script example
+local player = game.Players.LocalPlayer
+
+function teleportToCoords(x, y, z)
+    player.Character.HumanoidRootPart.CFrame = CFrame.new(x, y, z)
+    print("Teleported to: " .. x .. ", " .. y .. ", " .. z)
+end
+
+-- Call the function
+teleportToCoords(100, 70, 200)</code></pre>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🎯</span>
+                    Advanced Scripting
+                </h2>
+                
+                <h3>Auto-Mining Script</h3>
+                <pre><code>-- Advanced auto-mining example
+local player = game.Players.LocalPlayer
+local mining = false
+
+function startAutoMine()
+    mining = true
+    while mining do
+        local block = getBlockAt(player.x, player.y - 1, player.z)
+        if block.type == "diamond_ore" then
+            mineBlock(player.x, player.y - 1, player.z)
+            print("Diamond found and mined!")
+            wait(0.5)
+        end
+        wait(0.1)
+    end
+end
+
+function stopAutoMine()
+    mining = false
+    print("Auto-mining stopped")
+end
+
+-- Start mining
+startAutoMine()</code></pre>
+
+                <h3>Player Movement Enhancement</h3>
+                <pre><code>-- Speed and fly script
+function enableFly()
+    local player = game.Players.LocalPlayer
+    player.Character.Humanoid.PlatformStand = true
+    
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.Parent = player.Character.HumanoidRootPart
+    
+    print("Fly mode enabled!")
+end
+
+function setSpeed(speed)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    print("Speed set to: " .. speed)
+end
+
+-- Usage
+enableFly()
+setSpeed(50)</code></pre>
+            </section>
+
+            <section class="content-section">
+                <h2>
+                    <span class="icon">🛠</span>
+                    Script Templates
+                </h2>
+                
+                <h3>ESP (Extra Sensory Perception)</h3>
+                <pre><code>-- Player ESP script
+function createESP(player)
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = player.Character
+    highlight.FillColor = Color3.new(1, 0, 0)
+    highlight.OutlineColor = Color3.new(1, 1, 1)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+end
+
+-- Apply ESP to all players
+for _, player in pairs(game.Players:GetPlayers()) do
+    if player ~= game.Players.LocalPlayer then
+        createESP(player)
+    end
+end</code></pre>
+
+                <h3>Aimbot System</h3>
+                <pre><code>-- Simple aimbot script
+local aimbot = false
+
+function findClosestPlayer()
+    local localPlayer = game.Players.LocalPlayer
+    local closestPlayer = nil
+    local shortestDistance = math.huge
+    
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - 
+                            player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                closestPlayer = player
+            end
+        end
+    end
+    
+    return closestPlayer
+end
+
+function aimAtPlayer(targetPlayer)
+    if targetPlayer and targetPlayer.Character then
+        local camera = workspace.CurrentCamera
+        camera.CFrame = CFrame.lookAt(
+            camera.CFrame.Position,
+            targetPlayer.Character.Head.Position
+        )
+    end
+end
+
+-- Toggle aimbot
+if aimbot then
+    aimbot = false
+    print("Aimbot disabled")
+else
+    aimbot = true
+    print("Aimbot enabled")
+    
+    spawn(function()
+        while aimbot do
+            local target = findClosestPlayer()
+            if target then
+                aimAtPlayer(target)
+            end
+            wait(0.1)
+        end
+    end)
+end</code></pre>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
