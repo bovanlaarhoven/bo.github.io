@@ -128,78 +128,152 @@
                     </span>
                     Available Functions
                 </h2>
-                <p>Bosploit provides a comprehensive set of functions for Minecraft automation and enhancement. All functions are designed to work seamlessly with the JNI injection system.</p>
+                <p>Bosploit provides a comprehensive set of functions for Minecraft automation and enhancement. All functions follow Roblox-style naming conventions and use the service-based architecture.</p>
+            </div>
+
+            <div class="content-section">
+                <h2>Core Services</h2>
+                
+                <h3><code>game:GetService("Players")</code></h3>
+                <p>Access player-related functions and properties.</p>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+print(LocalPlayer.Name)</code></pre>
+
+                <h3><code>game:GetService("Workspace")</code></h3>
+                <p>Access world-related functions and the game environment.</p>
+                <pre><code>local Workspace = game:GetService("Workspace")
+local blocks = Workspace:GetChildren()</code></pre>
+
+                <h3><code>game:GetService("ReplicatedStorage")</code></h3>
+                <p>Access shared game data and remote functions.</p>
+                <pre><code>local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remotes = ReplicatedStorage:GetChildren()</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Player Functions</h2>
                 
-                <h3><code>getPlayer()</code></h3>
-                <p>Returns the current player instance.</p>
-                <pre><code>local player = getPlayer()
-print(player.name)</code></pre>
-
-                <h3><code>teleport(x, y, z)</code></h3>
+                <h3><code>LocalPlayer:Teleport(Vector3)</code></h3>
                 <p>Teleports the player to the specified coordinates.</p>
-                <pre><code>teleport(100, 64, 200)</code></pre>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+LocalPlayer:Teleport(Vector3.new(100, 64, 200))</code></pre>
 
-                <h3><code>setHealth(amount)</code></h3>
-                <p>Sets the player's health to the specified amount.</p>
-                <pre><code>setHealth(20) -- Full health</code></pre>
+                <h3><code>LocalPlayer.Character.Humanoid.Health</code></h3>
+                <p>Gets or sets the player's health.</p>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local humanoid = LocalPlayer.Character.Humanoid
+humanoid.Health = 20 -- Set full health</code></pre>
+
+                <h3><code>LocalPlayer.Character.HumanoidRootPart.Position</code></h3>
+                <p>Gets or sets the player's position.</p>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local position = LocalPlayer.Character.HumanoidRootPart.Position
+print("Player position:", position)</code></pre>
             </div>
 
             <div class="content-section">
-                <h2>World Functions</h2>
+                <h2>Workspace Functions</h2>
                 
-                <h3><code>getBlock(x, y, z)</code></h3>
+                <h3><code>Workspace:GetBlockAt(Vector3)</code></h3>
                 <p>Returns the block at the specified coordinates.</p>
-                <pre><code>local block = getBlock(100, 64, 200)
-print(block.type)</code></pre>
+                <pre><code>local Workspace = game:GetService("Workspace")
+local block = Workspace:GetBlockAt(Vector3.new(100, 64, 200))
+print("Block type:", block.Name)</code></pre>
 
-                <h3><code>setBlock(x, y, z, blockType)</code></h3>
+                <h3><code>Workspace:SetBlock(Vector3, string)</code></h3>
                 <p>Places a block at the specified coordinates.</p>
-                <pre><code>setBlock(100, 64, 200, "stone")</code></pre>
+                <pre><code>local Workspace = game:GetService("Workspace")
+Workspace:SetBlock(Vector3.new(100, 64, 200), "Stone")</code></pre>
 
-                <h3><code>explode(x, y, z, power)</code></h3>
+                <h3><code>Workspace:CreateExplosion(Vector3, number)</code></h3>
                 <p>Creates an explosion at the specified coordinates with the given power.</p>
-                <pre><code>explode(100, 64, 200, 4)</code></pre>
+                <pre><code>local Workspace = game:GetService("Workspace")
+Workspace:CreateExplosion(Vector3.new(100, 64, 200), 4)</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Combat Functions</h2>
                 
-                <h3><code>attack(entity)</code></h3>
+                <h3><code>LocalPlayer:Attack(Entity)</code></h3>
                 <p>Attacks the specified entity.</p>
-                <pre><code>local target = getNearestEntity("zombie")
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local target = Workspace:FindFirstChild("Zombie")
 if target then
-    attack(target)
+    LocalPlayer:Attack(target)
 end</code></pre>
 
-                <h3><code>aimAt(x, y, z)</code></h3>
+                <h3><code>LocalPlayer:LookAt(Vector3)</code></h3>
                 <p>Aims the player's crosshair at the specified coordinates.</p>
-                <pre><code>aimAt(100, 64, 200)</code></pre>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+LocalPlayer:LookAt(Vector3.new(100, 64, 200))</code></pre>
 
-                <h3><code>shoot()</code></h3>
+                <h3><code>LocalPlayer:Shoot()</code></h3>
                 <p>Shoots with the current weapon (bow, crossbow, etc.).</p>
-                <pre><code>aimAt(target.x, target.y, target.z)
-shoot()</code></pre>
+                <pre><code>local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+LocalPlayer:LookAt(target.Position)
+LocalPlayer:Shoot()</code></pre>
             </div>
 
             <div class="content-section">
                 <h2>Utility Functions</h2>
                 
-                <h3><code>wait(seconds)</code></h3>
+                <h3><code>wait(number)</code></h3>
                 <p>Pauses script execution for the specified number of seconds.</p>
                 <pre><code>wait(2.5) -- Wait 2.5 seconds</code></pre>
 
-                <h3><code>log(message)</code></h3>
-                <p>Prints a message to the console.</p>
-                <pre><code>log("Script started successfully!")</code></pre>
+                <h3><code>print(...)</code></h3>
+                <p>Prints messages to the console.</p>
+                <pre><code>print("Script started successfully!")
+print("Position:", LocalPlayer.Character.HumanoidRootPart.Position)</code></pre>
 
-                <h3><code>getTime()</code></h3>
-                <p>Returns the current game time.</p>
-                <pre><code>local time = getTime()
-print("Current time: " .. time)</code></pre>
+                <h3><code>game:GetService("RunService").Heartbeat</code></h3>
+                <p>Connects to the game's frame update event.</p>
+                <pre><code>local RunService = game:GetService("RunService")
+local connection = RunService.Heartbeat:Connect(function()
+    -- This runs every frame
+    print("Frame update")
+end)</code></pre>
+
+                <h3><code>Vector3.new(x, y, z)</code></h3>
+                <p>Creates a new Vector3 object for 3D coordinates.</p>
+                <pre><code>local position = Vector3.new(100, 64, 200)
+local offset = Vector3.new(10, 0, 10)
+local newPosition = position + offset</code></pre>
+            </div>
+
+            <div class="content-section">
+                <h2>Advanced Services</h2>
+                
+                <h3><code>game:GetService("TweenService")</code></h3>
+                <p>Create smooth animations and transitions.</p>
+                <pre><code>local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Quad)
+local tween = TweenService:Create(
+    LocalPlayer.Character.HumanoidRootPart,
+    tweenInfo,
+    {Position = Vector3.new(100, 64, 200)}
+)
+tween:Play()</code></pre>
+
+                <h3><code>game:GetService("UserInputService")</code></h3>
+                <p>Handle user input events.</p>
+                <pre><code>local UserInputService = game:GetService("UserInputService")
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.E then
+        print("E key pressed!")
+    end
+end)</code></pre>
             </div>
         </main>
     </div>
